@@ -1,0 +1,10 @@
+apiVersion: v1
+appVersion: 1.4.1
+description: A Helm chart for esrally
+engine: gotpl
+home: https://github.com/giantswarm/esrally-app
+icon: https://raw.githubusercontent.com/elastic/rally/master/logo/logo.png
+name: esrally-app
+sources:
+- https://github.com/elastic/rally
+version: [[ .Version ]]

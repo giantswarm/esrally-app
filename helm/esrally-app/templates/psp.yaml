@@ -1,0 +1,37 @@
+apiVersion: policy/v1beta1
+kind: PodSecurityPolicy
+metadata:
+  name: "{{ .Release.Name }}"
+  namespace: "{{ .Release.Namespace }}"
+  labels:
+    app.kubernetes.io/name: "{{ .Release.Name }}"
+spec:
+  allowedCapabilities: [] # drop default capabilities
+  allowPrivilegeEscalation: false
+  fsGroup:
+    rule: MustRunAs
+    ranges:
+      - min: {{ .Values.securityContext.groupID }}
+        max: {{ .Values.securityContext.groupID }}
+  hostIPC: false
+  hostNetwork: false
+  hostPID: false
+  privileged: false
+  runAsGroup:
+    rule: MustRunAs
+    ranges:
+      - min: {{ .Values.securityContext.groupID }}
+        max: {{ .Values.securityContext.groupID }}
+  runAsUser:
+    rule: MustRunAs
+    ranges:
+      - min: {{ .Values.securityContext.userID }}
+        max: {{ .Values.securityContext.userID }}
+  seLinux:
+    rule: RunAsAny
+  supplementalGroups:
+    rule: RunAsAny
+  volumes:
+    - 'configMap'
+    - 'downwardAPI'
+    - 'secret'

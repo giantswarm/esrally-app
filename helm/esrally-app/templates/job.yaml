@@ -1,0 +1,78 @@
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: "{{ .Release.Name }}"
+  namespace: "{{ .Release.Namespace }}"
+  labels:
+    app.kubernetes.io/name: "{{ .Release.Name }}"
+spec:
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/name: "{{ .Release.Name }}"
+    spec:
+      serviceAccountName: "{{ .Release.Name }}"
+      securityContext:
+        runAsUser: {{ .Values.securityContext.userID }}
+        runAsGroup: {{ .Values.securityContext.groupID }}
+      containers:
+      - name: esrally
+        image: "{{ .Values.image.registry }}/{{ .Values.image.repository }}:v1.0.1"
+        command:
+        - sh
+        - -c
+        - |
+          set -o errexit ; set -o xtrace ; set -o nounset
+
+          if [[ ! -z $USERNAME ]]; then
+            esrally --pipeline=benchmark-only --target-hosts=$TARGET \
+              --track=$TRACK --report-format=markdown \
+              --client-options="basic_auth_user:'$ES_USERNAME',basic_auth_password:'$ES_PASSWORD'" 2>&1
+          else
+            esrally --pipeline=benchmark-only --target-hosts=$TARGET \
+            --track=$TRACK --report-format=markdown 2>&1
+          fi
+        env:
+        - name: TARGET
+          valueFrom:
+            secretKeyRef:
+              name: {{ .Values.job.env.target.secretName }}
+              key: {{ .Values.job.env.target.secretKey }}
+        - name: TRACK
+          valueFrom:
+            secretKeyRef:
+              name: {{ .Values.job.env.track.secretName }}
+              key: {{ .Values.job.env.track.secretKey }}
+        - name: ES_USERNAME
+          {{- if .Values.job.env.username }}
+          valueFrom:
+            secretKeyRef:
+              name: {{ .Values.job.env.username.secretName }}
+              key: {{ .Values.job.env.username.secretKey }}
+          {{- else }}
+          # if the value isn't set, default to an empty string
+          value: ""
+          {{- end }}
+        - name: ES_PASSWORD
+          {{- if .Values.job.env.password }}
+          valueFrom:
+            secretKeyRef:
+              name: {{ .Values.job.env.password.secretName }}
+              key: {{ .Values.job.env.password.secretKey }}
+          {{- else }}
+          # if the value isn't set, default to an empty string
+          value: ""
+          {{- end }}
+        volumeMounts:
+        - name: "{{ .Release.Name }}"
+          mountPath: /home/esrally/.rally/rally.ini
+          subPath: rally.ini
+      volumes:
+      - name: "{{ .Release.Name }}"
+        configMap:
+          name: "{{ .Release.Name }}"
+          items:
+          - key: rally.ini
+            path: rally.ini
+      restartPolicy: Never
+  backoffLimit: 4

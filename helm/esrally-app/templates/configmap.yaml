@@ -1,0 +1,46 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: "{{ .Release.Name }}"
+  namespace: "{{ .Release.Namespace }}"
+  annotations:
+  labels:
+    app.kubernetes.io/name: "{{ .Release.Name }}"
+data:
+  rally.ini: |
+    [meta]
+    config.version = 17
+
+    [system]
+    env.name = local
+
+    [node]
+    root.dir = /home/esrally/.rally/benchmarks
+    src.root.dir = /home/esrally/.rally/benchmarks/src
+
+    [source]
+    remote.repo.url = https://github.com/elastic/elasticsearch.git
+    elasticsearch.src.subdir = elasticsearch
+
+    [benchmarks]
+    local.dataset.cache = /home/esrally/.rally/benchmarks/data
+
+    [reporting]
+    datastore.type = in-memory
+    datastore.host =
+    datastore.port =
+    datastore.secure = False
+    datastore.user =
+    datastore.password =
+
+    [tracks]
+    default.url = https://github.com/elastic/rally-tracks
+
+    [teams]
+    default.url = https://github.com/elastic/rally-teams
+
+    [defaults]
+    preserve_benchmark_candidate = False
+
+    [distributions]
+    release.cache = true
