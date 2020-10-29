@@ -2,6 +2,21 @@ image:
   registry: "quay.io"
   repository: "giantswarm/esrally"
 
+job:
+  env:
+    target:
+      secretName: esrally-job-config
+      secretKey: target
+    track:
+      secretName: esrally-job-config
+      secretKey: track
+    username:
+      secretName: esrally-job-config
+      secretKey: username
+    password:
+      secretName: esrally-job-config
+      secretKey: password
+
 securityContext:
   userID: 2000
   groupID: 2000

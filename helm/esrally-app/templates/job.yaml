@@ -25,24 +25,44 @@ spec:
           set -o errexit ; set -o xtrace ; set -o nounset
 
           if [[ ! -z $USERNAME ]]; then
-            esrally --pipeline=benchmark-only --target-hosts=$TARGET_HOST \
+            esrally --pipeline=benchmark-only --target-hosts=$TARGET \
               --track=$TRACK --report-format=$REPORT_FORMAT \
-              --client-options="basic_auth_user:'$USERNAME',basic_auth_password:'$USER_PASSWORD'" 2>&1
+              --client-options="basic_auth_user:'$ES_USERNAME',basic_auth_password:'$ES_PASSWORD'" 2>&1
           else
-            esrally --pipeline=benchmark-only --target-hosts=$TARGET_HOST \
+            esrally --pipeline=benchmark-only --target-hosts=$TARGET \
             --track=$TRACK --report-format=$REPORT_FORMAT 2>&1
           fi
         env:
-        - name: TARGET_HOST
-          value: "opendistro-es-client-service:9200"
+        - name: TARGET
+          valueFrom:
+            secretKeyRef:
+              name: {{ .Values.job.env.target.secretName }}
+              key: {{ .Values.job.env.target.secretKey }}
         - name: TRACK
-          value: "percolator"
-        - name: REPORT_FORMAT
-          value: "markdown"
-        - name: USERNAME
-          value: "admin"
-        - name: USER_PASSWORD
-          value: "admin"
+          valueFrom:
+            secretKeyRef:
+              name: {{ .Values.job.env.track.secretName }}
+              key: {{ .Values.job.env.track.secretKey }}
+        - name: ES_USERNAME
+          {{- if .Values.job.env.username }}
+          valueFrom:
+            secretKeyRef:
+              name: {{ .Values.job.env.username.secretName }}
+              key: {{ .Values.job.env.username.secretKey }}
+          {{- else }}
+          # if the value isn't set, default to an empty string
+          value: ""
+          {{- end }}
+        - name: ES_PASSWORD
+          {{- if .Values.job.env.password }}
+          valueFrom:
+            secretKeyRef:
+              name: {{ .Values.job.env.password.secretName }}
+              key: {{ .Values.job.env.password.secretKey }}
+          {{- else }}
+          # if the value isn't set, default to an empty string
+          value: ""
+          {{- end }}
         volumeMounts:
         - name: "{{ .Release.Name }}"
           mountPath: /home/esrally/.rally/rally.ini
