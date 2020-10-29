@@ -11,8 +11,8 @@ spec:
   fsGroup:
     rule: MustRunAs
     ranges:
-      - min: 2000
-        max: 2000
+      - min: {{ .Values.securityContext.groupID }}
+        max: {{ .Values.securityContext.groupID }}
   hostIPC: false
   hostNetwork: false
   hostPID: false
@@ -20,13 +20,13 @@ spec:
   runAsGroup:
     rule: MustRunAs
     ranges:
-      - min: 2000
-        max: 2000
+      - min: {{ .Values.securityContext.groupID }}
+        max: {{ .Values.securityContext.groupID }}
   runAsUser:
     rule: MustRunAs
     ranges:
-      - min: 2000
-        max: 2000
+      - min: {{ .Values.securityContext.userID }}
+        max: {{ .Values.securityContext.userID }}
   seLinux:
     rule: RunAsAny
   supplementalGroups:

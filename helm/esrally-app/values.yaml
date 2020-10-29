@@ -1,3 +1,7 @@
 image:
   registry: "quay.io"
   repository: "giantswarm/esrally"
+
+securityContext:
+  userID: 2000
+  groupID: 2000
