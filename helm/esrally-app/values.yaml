@@ -1,1 +1,3 @@
-# empty values file
+image:
+  registry: "quay.io"
+  repository: "giantswarm/esrally"
