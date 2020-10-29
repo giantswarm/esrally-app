@@ -26,11 +26,11 @@ spec:
 
           if [[ ! -z $USERNAME ]]; then
             esrally --pipeline=benchmark-only --target-hosts=$TARGET \
-              --track=$TRACK --report-format=$REPORT_FORMAT \
+              --track=$TRACK --report-format=markdown \
               --client-options="basic_auth_user:'$ES_USERNAME',basic_auth_password:'$ES_PASSWORD'" 2>&1
           else
             esrally --pipeline=benchmark-only --target-hosts=$TARGET \
-            --track=$TRACK --report-format=$REPORT_FORMAT 2>&1
+            --track=$TRACK --report-format=markdown 2>&1
           fi
         env:
         - name: TARGET
