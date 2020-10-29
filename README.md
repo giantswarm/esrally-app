@@ -1,10 +1,10 @@
-[![CircleCI](https://circleci.com/gh/giantswarm/{APP-NAME}-app.svg?style=shield)](https://circleci.com/gh/giantswarm/{APP-NAME}-app)
+[![CircleCI](https://circleci.com/gh/giantswarm/esrally-app.svg?style=shield)](https://circleci.com/gh/giantswarm/esrally-app)
 
-# {APP-NAME}-app chart
+# esrally-app chart
 
-Giant Swarm offers a {APP-NAME} Managed App which can be installed in tenant clusters.
-Here we define the {APP-NAME} chart with its templates and default configuration.
+Giant Swarm offers an esrally Managed App which can be installed in tenant clusters.
+Here we define the esrally chart with its templates and default configuration.
 
 ## Credit
 
-* {APP HELM REPOSITORY}
+* https://github.com/elastic/rally
