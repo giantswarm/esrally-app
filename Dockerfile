@@ -1,7 +1,7 @@
 FROM python:3.9.0-alpine3.12
 MAINTAINER simonweald@giantswarm.io
 
-ENV ESRALLY_VER=1.4.1
+ENV ESRALLY_VER=1.4.0
 
 RUN apk add --update --no-cache build-base linux-headers python3-dev git && \
     rm -rf /var/lib/apt/lists/*
