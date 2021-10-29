@@ -11,7 +11,7 @@ updates:
       time: "04:00"
     open-pull-requests-limit: 10
     reviewers:
-      - giantswarm/team-cabbage
+      - giantswarm/team-atlas
   - package-ecosystem: github-actions
     directory: "/"
     schedule:
@@ -19,6 +19,6 @@ updates:
       time: "04:00"
     open-pull-requests-limit: 10
     reviewers:
-      - giantswarm/team-cabbage
+      - giantswarm/team-atlas
     ignore:
       - dependency-name: zricethezav/gitleaks-action
