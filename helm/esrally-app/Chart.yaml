@@ -10,4 +10,3 @@ sources:
 version: [[ .Version ]]
 annotations:
   application.giantswarm.io/team: atlas
-
