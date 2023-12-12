@@ -8,3 +8,5 @@ name: esrally-app
 sources:
 - https://github.com/elastic/rally
 version: [[ .Version ]]
+annotations:
+  application.giantswarm.io/team: atlas
