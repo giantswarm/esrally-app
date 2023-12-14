@@ -4,12 +4,12 @@ metadata:
   name: "{{ .Release.Name }}"
   namespace: "{{ .Release.Namespace }}"
   labels:
-    app.kubernetes.io/name: "{{ .Release.Name }}"
+    {{- include "labels.common" . | nindent 4 }}
 spec:
   template:
     metadata:
       labels:
-        app.kubernetes.io/name: "{{ .Release.Name }}"
+        {{- include "labels.common" . | nindent 4 }}
     spec:
       serviceAccountName: "{{ .Release.Name }}"
       securityContext:

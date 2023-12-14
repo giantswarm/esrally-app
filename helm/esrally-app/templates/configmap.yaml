@@ -5,7 +5,7 @@ metadata:
   namespace: "{{ .Release.Namespace }}"
   annotations:
   labels:
-    app.kubernetes.io/name: "{{ .Release.Name }}"
+    {{- include "labels.common" . | nindent 4 }}
 data:
   rally.ini: |
     [meta]
